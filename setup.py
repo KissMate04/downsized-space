@@ -5,7 +5,7 @@ setup(
     version="0.1.0",
     packages=find_packages(include=["downsized_space", "downsized_space.*"]),
     package_data={
-        "downsized-space": ["sprites/*.png"],
+        "downsized_space": ["sprites/*.png"],
     },
     include_package_data=True,
     install_requires=[
