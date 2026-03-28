@@ -1,4 +1,3 @@
-# pylint: disable=import-error, no-member, attribute-defined-outside-init
 """
 Module for handling boss enemy behavior in the game.
 Bosses are special enemies with unique movement patterns and behavior.

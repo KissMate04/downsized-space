@@ -1,4 +1,3 @@
-# pylint: disable=import-error, no-member
 """
 Module for handling the player's ship in the game.
 
@@ -93,7 +92,6 @@ class Player(ship.Ship):
 
         Triggers game over when the player dies.
         """
-        print("you have died.")
         pygame.event.post(pygame.event.Event(game.PLAYER_DEATH))
 
     def shoot(self):

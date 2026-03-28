@@ -1,4 +1,3 @@
-# pylint: disable=import-error, no-member
 """
 Module for managing game state and global game settings.
 
@@ -223,7 +222,6 @@ class LevelScene:
                 for en in self.enemies:
                     if proj.hitbox.colliderect(en.hitbox):
                         if not en.dying:
-                            print("Player hit an enemy with: ",proj.damage," damage!")
                             score += 5
                             en.hit(proj.damage)
                         if proj in self.projectiles:
@@ -237,10 +235,6 @@ class LevelScene:
                 if proj.hitbox.colliderect(self.p.hitbox):
                     self.p.hit(proj.damage)
                     proj.shooter.promotion()
-                    print(
-                        "Enemy hit the player with: ",
-                        proj.damage,
-                        " damage!")
                     if proj in self.projectiles:
                         self.projectiles.remove(proj)
 

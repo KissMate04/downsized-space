@@ -1,4 +1,3 @@
-# pylint: disable=import-error, no-member
 """
 Contains the game loop, levels and the menu.
 """
@@ -55,8 +54,6 @@ def main():
         GAME_WIDTH,
         SCREEN_HEIGHT - 40
     )
-
-    print(screen.get_size(), ", ", SIDE_WIDTH, ", ", GAME_AREA)
 
     def make_scene(name):
         if name == "main_menu":

@@ -1,4 +1,3 @@
-# pylint: disable=import-error, no-member, attribute-defined-outside-init
 """
 Module for handling enemy ships in the game.
 """
@@ -6,7 +5,6 @@ import os
 import pygame
 import ship
 import game
-import projectile
 
 
 class Enemy(ship.Ship):
@@ -80,7 +78,6 @@ class Enemy(ship.Ship):
             game.score += 20
             self.dying = True
             self.time = pygame.time.get_ticks()
-            print("score: ", game.score)
 
     def promotion(self):
         """

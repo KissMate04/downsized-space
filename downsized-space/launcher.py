@@ -3,9 +3,6 @@ import os
 import sys
 import subprocess
 
-# A laucher egy részében Claude segített
-
-
 def main():
     # Get the package directory
     package_dir = os.path.dirname(os.path.abspath(__file__))

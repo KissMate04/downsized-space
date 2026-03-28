@@ -1,4 +1,3 @@
-# pylint : disable=import-error, no-member
 """
 Module containing the base Ship class for the game.
 
@@ -47,7 +46,7 @@ class Ship:
             self.image.get_width(),
             self.image.get_height())
 
-    def move(self, area):  # pylint: disable=unused-argument
+    def move(self, area):
         """
         Base movement method for ships.
 
