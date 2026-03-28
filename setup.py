@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="downsized-space",
     version="0.1.0",
-    packages=find_packages(include=["downsized-space", "downsized-space.*"]),
+    packages=find_packages(include=["downsized_space", "downsized_space.*"]),
     package_data={
         "downsized-space": ["sprites/*.png"],
     },
@@ -14,7 +14,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "downsized-space=downsized-space.launcher:main",
+            "downsized-space=downsized_space.launcher:main",
         ],
     },
     author="Kiss Máté",
