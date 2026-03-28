@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="PythonProject",
+    name="downsized-space",
     version="0.1.0",
-    packages=find_packages(include=["pythonproject", "pythonproject.*"]),
+    packages=find_packages(include=["downsized-space", "downsized-space.*"]),
     package_data={
-        "pythonproject": ["sprites/*.png"],
+        "downsized-space": ["sprites/*.png"],
     },
     include_package_data=True,
     install_requires=[
@@ -14,12 +14,12 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "pythonproject=pythonproject.launcher:main",
+            "downsized-space=downsized-space.launcher:main",
         ],
     },
     author="Kiss Máté",
-    author_email="kiss.mate.4@stud.u-szeged.hu",
-    url="https://github.com/KissMate04/PythonProject",
+    author_email="matekiss424@gmail.com",
+    url="https://github.com/KissMate04/downsized-space",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
