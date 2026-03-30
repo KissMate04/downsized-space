@@ -7,7 +7,7 @@ import pygame
 import game
 
 class ShipPanels:
-    def __init__(self, sw,sh):
+    def __init__(self, gw,sw,sh):
         self.left_panel = pygame.image.load(
             os.path.join('sprites', "leftpanel.png")).convert_alpha()
         self.left_panel = pygame.transform.scale(
@@ -19,11 +19,12 @@ class ShipPanels:
         self.area_panel = pygame.image.load(
             os.path.join('sprites', "areapanel.png")).convert_alpha()
         self.area_panel = pygame.transform.scale(
-            self.area_panel, (800, sh))
+            self.area_panel, (gw, sh))
 
 def main():
     current_scene = "main_menu"
     pygame.font.init()
+    pygame.mixer.init()
 
     LEVEL1 = [
         (0.1, 0.1),
@@ -46,7 +47,7 @@ def main():
     clock = pygame.time.Clock()
     screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # the entire scrren
     SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
-    GAME_WIDTH = 800  # width of the game area
+    GAME_WIDTH = SCREEN_WIDTH // 3  # width of the game area
     SIDE_WIDTH = (SCREEN_WIDTH - GAME_WIDTH) // 2  # width of each side area
     GAME_AREA = pygame.Rect(
         SIDE_WIDTH,
@@ -57,14 +58,23 @@ def main():
 
     def make_scene(name):
         if name == "main_menu":
+            pygame.mixer.music.load("audio/music_menu.wav")
+            pygame.mixer.music.play(-1)
             return game.MainScreen(GAME_AREA)
         if name == "level1":
-            return game.LevelScene(GAME_AREA, LEVEL1, 1, ShipPanels(SIDE_WIDTH, SCREEN_HEIGHT))
+            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.play(-1)
+            return game.LevelScene(GAME_AREA, LEVEL1, 1, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "level2":
-            return game.LevelScene(GAME_AREA, LEVEL2, 2, ShipPanels(SIDE_WIDTH, SCREEN_HEIGHT))
+            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.play(-1)
+            return game.LevelScene(GAME_AREA, LEVEL2, 2, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "level3":
-            return game.LevelScene(GAME_AREA, LEVEL3, 3, ShipPanels(SIDE_WIDTH, SCREEN_HEIGHT))
+            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.play(-1)
+            return game.LevelScene(GAME_AREA, LEVEL3, 3, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "over":
+            pygame.mixer.music.unload()
             return game.GameOverScreen(GAME_AREA)
         return game.MainScreen(GAME_AREA)
 
