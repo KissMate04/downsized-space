@@ -66,20 +66,34 @@ class MainScreen:
             self.area.left + self.area.width // 2 - 100,
             self.area.height // 2 - 30, 200, 100)
         self.howto_text = menu_font.render("How To Play" , True, (255, 255, 255))
+        self.howto_text_scroll = menu_font.render("Scroll with your mouse to change size.",True, (255, 255, 255))
+        self.howto_text_enemy = menu_font.render("The bigger your ship, the more damage you deal!", True, (255, 255, 255))
+        self.howto_text_move = menu_font.render("Use WASD or arrow keys to move your ship.", True, (255, 255, 255))
+        self.howto_text_shoot = menu_font.render("Click left mouse button or press space to shoot.", True, (255, 255, 255))
+        self.back_to_menu_text = menu_font.render("Got it!", True, (255, 255, 255))
+        self.back_to_menu_btn = pygame.Rect(
+            self.area.left + self.area.width // 2 - 100,
+            self.area.height - self.area.height // 5, 200, 100)
 
         self.quit_btn = pygame.Rect(
             (self.area.left + self.area.width // 2 - 100,
              self.area.height - self.area.height // 3 + 30, 200, 100))
         self.quit_text = menu_font.render("Quit", True, (255, 255, 255))
+        self.is_howto = False
 
     def handle_events(self, events):
-        if self.start_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if not self.is_howto and self.start_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             return "level1"
 
-        #TODO implement howto button
+        if not self.is_howto and self.howto_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            self.is_howto = not self.is_howto
 
-        if self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if not self.is_howto and self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             return "QUIT"
+
+        if self.is_howto and self.back_to_menu_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            self.is_howto = False
+
         return "main_menu"
 
     def update(self, events):
@@ -87,21 +101,48 @@ class MainScreen:
 
     def draw(self, screen):
         screen.fill((0, 0, 0))
-        screen.blit(
-            self.start_text,
-            (self.start_btn.centerx - self.start_text.get_width() // 2,
-            self.start_btn.centery - self.start_text.get_height() // 2)
-        )
-        screen.blit(
-            self.howto_text,
-            (self.howto_btn.centerx - self.howto_text.get_width() // 2,
-             self.howto_btn.centery - self.howto_text.get_height() // 2)
-        )
-        screen.blit(
-            self.quit_text,
-            (self.quit_btn.centerx - self.quit_text.get_width() // 2,
-             self.quit_btn.centery - self.quit_text.get_height() // 2)
-        )
+        if self.is_howto:
+            screen.blit(
+                self.howto_text_scroll,
+                (self.area.left + self.area.width // 2 - self.howto_text_scroll.get_width() // 2,
+                 self.area.height // 6)
+            )
+            screen.blit(
+                self.howto_text_enemy,
+                (self.area.left + self.area.width // 2 - self.howto_text_enemy.get_width() // 2,
+                 self.area.height // 6 + self.howto_text_scroll.get_height() * 2)
+            )
+            screen.blit(
+                self.howto_text_move,
+                (self.area.left + self.area.width // 2 - self.howto_text_move.get_width() // 2,
+                 self.area.height // 6 + self.howto_text_scroll.get_height() * 6)
+            )
+            screen.blit(
+                self.howto_text_shoot,
+                (self.area.left + self.area.width // 2 - self.howto_text_shoot.get_width() // 2,
+                 self.area.height // 6 + self.howto_text_move.get_height() * 10)
+            )
+            screen.blit(
+                self.back_to_menu_text,
+                (self.back_to_menu_btn.centerx - self.back_to_menu_text.get_width() // 2,
+                 self.back_to_menu_btn.centery - self.back_to_menu_text.get_height() // 2)
+            )
+        else:
+            screen.blit(
+                self.start_text,
+                (self.start_btn.centerx - self.start_text.get_width() // 2,
+                self.start_btn.centery - self.start_text.get_height() // 2)
+            )
+            screen.blit(
+                self.howto_text,
+                (self.howto_btn.centerx - self.howto_text.get_width() // 2,
+                 self.howto_btn.centery - self.howto_text.get_height() // 2)
+            )
+            screen.blit(
+                self.quit_text,
+                (self.quit_btn.centerx - self.quit_text.get_width() // 2,
+                 self.quit_btn.centery - self.quit_text.get_height() // 2)
+            )
 
 class LevelScene:
     def __init__(self, area, level, num, ship_panels):
@@ -135,6 +176,7 @@ class LevelScene:
         self.level_text = level_font.render(
             f"LEVEL {self.num}", True, (255, 10, 10))
         pygame.mouse.set_visible(False)
+
     def add_enemy(self, nx,ny):
         x = self.area.left + nx * self.area.width
         y = self.area.top + ny * self.area.height
