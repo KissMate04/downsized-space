@@ -14,7 +14,7 @@ class Enemy(ship.Ship):
     Enemies follow a rectangular movement pattern, shoot at the player,
     and are upgraded (promoted) when they hit the player.
     """
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
         """
         Initialize an Enemy with given parameters.
 
@@ -27,7 +27,7 @@ class Enemy(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(image, max_health, base_damage, speed, x, y)
+        super().__init__(game_width,image, max_health, base_damage, speed, x, y)
         self.alive = True
         self.xdirection = 1
         self.ydirection = 0

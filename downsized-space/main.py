@@ -58,6 +58,7 @@ def main():
 
     def make_scene(name):
         if name == "main_menu":
+            pygame.time.wait(250)
             pygame.mixer.music.load("audio/music_menu.wav")
             pygame.mixer.music.play(-1)
             return game.MainScreen(GAME_AREA)

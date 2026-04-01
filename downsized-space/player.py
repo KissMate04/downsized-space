@@ -16,7 +16,7 @@ class Player(ship.Ship):
     The player can move in all directions using keyboard controls,
     shoot projectiles, and resize their ship using the mouse wheel.
     """
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Player with given parameters.
 
@@ -29,7 +29,7 @@ class Player(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(image, max_health, base_damage, speed, x, y)
+        super().__init__(game_width,image, max_health, base_damage, speed, x, y)
         self.cooldown = 0
 
     def resize(self, eventy):
@@ -42,9 +42,10 @@ class Player(ship.Ship):
         Args:
             eventy: Mouse wheel direction (1 for increase, -1 for decrease)
         """
-        if eventy == 1 and self.shipsize < 176:
+        max_size = self.game_width // 4.5 - ((self.game_width // 4.5) % 16)
+        if eventy == 1 and self.shipsize < max_size:
             self.shipsize += 16
-        if eventy == -1 and self.shipsize > 48:
+        if eventy == -1 and self.shipsize > max(48, max_size - (16*8)):
             self.shipsize -= 16
         self.damage = self.base_damage * (self.shipsize / 100)
         self.image = pygame.transform.scale(
@@ -54,7 +55,6 @@ class Player(ship.Ship):
             self.y,
             self.image.get_width(),
             self.image.get_height())
-
 
     def move(self, area, keys):
         """

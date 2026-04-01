@@ -10,6 +10,7 @@ import pygame
 import player
 import enemy
 import projectile
+import boss
 
 pygame.init()
 
@@ -159,6 +160,7 @@ class LevelScene:
             self.add_enemy(nx,ny)
         self.projectiles = []
         self.p = player.Player(
+            self.area.width,
             'startership.png',
             PLAYER_MAX_HEALTH,
             PLAYER_BASE_DAMAGE,
@@ -187,6 +189,7 @@ class LevelScene:
 
         self.enemies.append(
             enemy.Enemy(
+                self.area.width,
                 'enemyship1.png',
                 ENEMY_MAX_HEALTH,
                 ENEMY_BASE_DAMAGE,

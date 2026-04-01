@@ -15,7 +15,7 @@ class Ship:
     including movement, health management, and collision detection.
     """
 
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
         """
         Initialize a Ship with given parameters.
 
@@ -28,7 +28,9 @@ class Ship:
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        self.shipsize = 48
+        self.game_width = game_width
+        max_size = self.game_width // 4.5 - ((self.game_width // 4.5) % 16)
+        self.shipsize = max(48, max_size - (16*8))
         self.image = pygame.image.load(
             os.path.join('sprites', image)).convert_alpha()
         self.image = pygame.transform.scale(
@@ -36,7 +38,7 @@ class Ship:
         self.max_health = max_health
         self.health = max_health
         self.base_damage = base_damage
-        self.damage = base_damage * (self.shipsize / 100)
+        self.damage = base_damage * (self.shipsize / 120)
         self.speed = speed
         self.x = x
         self.y = y
