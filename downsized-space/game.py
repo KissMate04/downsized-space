@@ -4,6 +4,8 @@ Module for managing game state and global game settings.
 Contains global variables for game settings, state tracking,
 and lists of game objects (projectiles, enemies).
 """
+from cmath import rect
+
 import pygame
 import player
 import enemy
@@ -176,6 +178,8 @@ class LevelScene:
         self.level_text = level_font.render(
             f"LEVEL {self.num}", True, (255, 10, 10))
         pygame.mouse.set_visible(False)
+        self.health_bg = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.10, 20, self.ship_panels.left_panel.get_width() // 1.4, self.area.height-20)
+        self.health = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.10, 20, self.ship_panels.left_panel.get_width() // 1.4, self.area.height-20)
 
     def add_enemy(self, nx,ny):
         x = self.area.left + nx * self.area.width
@@ -279,6 +283,7 @@ class LevelScene:
                     proj.shooter.promotion()
                     if proj in self.projectiles:
                         self.projectiles.remove(proj)
+                    self.health.width = self.health_bg.width * (self.p.health / self.p.max_health)
 
                 # Remove projectile if it goes off-screen
                 if proj in self.projectiles and (
@@ -314,6 +319,8 @@ class LevelScene:
             return
 
         screen.fill((50, 50, 50))
+        pygame.draw.rect(screen, (255, 0, 0), self.health_bg)
+        pygame.draw.rect(screen, (0, 255, 0), self.health)
         screen.blit(self.ship_panels.left_panel, (0, 0))
         screen.blit(self.ship_panels.area_panel, (self.area.left, 0))
         screen.blit(self.ship_panels.right_panel, (self.area.left + self.area.width, 0))
@@ -328,6 +335,8 @@ class LevelScene:
             screen.blit(en.image, (en.x, en.y))
         for proj in self.projectiles:
             proj.draw(screen)
+
+
 
 
 class GameOverScreen:
