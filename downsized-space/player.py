@@ -31,6 +31,7 @@ class Player(ship.Ship):
         """
         super().__init__(game_width,image, max_health, base_damage, speed, x, y)
         self.cooldown = 0
+        self.max_size = self.game_width // 4.5 - ((self.game_width // 4.5) % 16)
 
     def resize(self, eventy):
         """
@@ -42,10 +43,9 @@ class Player(ship.Ship):
         Args:
             eventy: Mouse wheel direction (1 for increase, -1 for decrease)
         """
-        max_size = self.game_width // 4.5 - ((self.game_width // 4.5) % 16)
-        if eventy == 1 and self.shipsize < max_size:
+        if eventy == 1 and self.shipsize < self.max_size:
             self.shipsize += 16
-        if eventy == -1 and self.shipsize > max(48, max_size - (16*8)):
+        if eventy == -1 and self.shipsize > max(48, self.max_size - (16*8)):
             self.shipsize -= 16
         self.damage = self.base_damage * (self.shipsize / 100)
         self.image = pygame.transform.scale(

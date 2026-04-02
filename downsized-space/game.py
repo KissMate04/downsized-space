@@ -180,8 +180,26 @@ class LevelScene:
         self.level_text = level_font.render(
             f"LEVEL {self.num}", True, (255, 10, 10))
         pygame.mouse.set_visible(False)
-        self.health_bg = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.10, 20, self.ship_panels.left_panel.get_width() // 1.4, self.area.height-20)
-        self.health = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.10, 20, self.ship_panels.left_panel.get_width() // 1.4, self.area.height-20)
+        self.health_bar_bg = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
+        self.health_bar = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
+        self.size_bar_bg = pygame.Rect(
+            self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.7,
+            self.area.height * 0.44,
+            self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
+            self.area.height * 0.96 - self.area.height * 0.4)
+        self.size_bar = pygame.Rect(
+            self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.7,
+            self.area.height * 0.44,
+            self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
+            self.area.height * 0.96 - self.area.height * 0.4)
+        self.size_bar_resize()
+
+    def size_bar_resize(self):
+        new_h = int(self.size_bar_bg.height * (self.p.shipsize / self.p.max_size))
+        new_h = max(0, new_h)
+
+        self.size_bar.height = new_h
+        self.size_bar.top = self.size_bar_bg.bottom - new_h
 
     def add_enemy(self, nx,ny):
         x = self.area.left + nx * self.area.width
@@ -236,6 +254,8 @@ class LevelScene:
             # Resizing player with mousewheel
             if event.type == pygame.MOUSEWHEEL:
                 self.p.resize(event.y)
+                self.size_bar_resize()
+
             # Player shooting with left mouse click or space
             if ((event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (
                     event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
@@ -286,7 +306,7 @@ class LevelScene:
                     proj.shooter.promotion()
                     if proj in self.projectiles:
                         self.projectiles.remove(proj)
-                    self.health.width = self.health_bg.width * (self.p.health / self.p.max_health)
+                    self.health_bar.width = self.health_bar_bg.width * (self.p.health / self.p.max_health)
 
                 # Remove projectile if it goes off-screen
                 if proj in self.projectiles and (
@@ -322,8 +342,10 @@ class LevelScene:
             return
 
         screen.fill((50, 50, 50))
-        pygame.draw.rect(screen, (255, 0, 0), self.health_bg)
-        pygame.draw.rect(screen, (0, 255, 0), self.health)
+        pygame.draw.rect(screen, (255, 0, 0), self.health_bar_bg)
+        pygame.draw.rect(screen, (0, 255, 0), self.health_bar)
+        pygame.draw.rect(screen, (150, 150, 255), self.size_bar_bg)
+        pygame.draw.rect(screen, (235, 180, 52), self.size_bar)
         screen.blit(self.ship_panels.left_panel, (0, 0))
         screen.blit(self.ship_panels.area_panel, (self.area.left, 0))
         screen.blit(self.ship_panels.right_panel, (self.area.left + self.area.width, 0))
@@ -338,9 +360,6 @@ class LevelScene:
             screen.blit(en.image, (en.x, en.y))
         for proj in self.projectiles:
             proj.draw(screen)
-
-
-
 
 class GameOverScreen:
     def __init__(self, area):
