@@ -20,11 +20,11 @@ class GameOverScreen:
 
     def handle_events(self, events):
         if self.menu_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            return "main_menu"
+            return ["main_menu",0]
 
         if self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            return "QUIT"
-        return "over"
+            return ["QUIT",0]
+        return ["over",0]
 
     def update(self, events):
         pass

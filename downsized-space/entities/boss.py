@@ -34,6 +34,7 @@ class Boss(enemy.Enemy):
         """
         super().__init__(game_width,image, max_health, base_damage, speed, x, y)
 
+
     def move(self,area):
         """
         Move the boss according to its current direction.
@@ -45,18 +46,18 @@ class Boss(enemy.Enemy):
         """
         if self.dying:
             if pygame.time.get_ticks() - self.time > 500:
-                level.enemies.remove(self)
+                self.alive = False
             return
 
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if self.x >= area.width - self.image.get_width() - 20:
+        if self.x >= area.left + area.width*0.99 - self.image.get_width():
             self.xdirection = -1
-        elif self.x <= 20:
-            self.xdirection = 1
-        if self.y >= 350:
+        elif self.y >= area.height*0.39 - self.shipsize:
             self.ydirection = -1
-        elif self.y <= 30:
+        elif self.x <= area.left*1.01:
+            self.xdirection = 1
+        elif self.y <= area.height*0.02:
             self.ydirection = 1
 
         # Random chance to direction (1% by default)

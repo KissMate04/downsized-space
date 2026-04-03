@@ -29,7 +29,7 @@ class Enemy(ship.Ship):
         """
         super().__init__(game_width,image, max_health, base_damage, speed, x, y)
         self.alive = True
-        self.xdirection = 1
+        self.xdirection = 0
         self.ydirection = 0
         self.dying = False
         self.time = 0
@@ -45,19 +45,19 @@ class Enemy(ship.Ship):
             if pygame.time.get_ticks() - self.time > 500:
                 self.alive = False
             return
-
+        #Playable area for enemy is area.left*1.01, area.top*1.01, area.width*0.99, area.height*0.39
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if (self.x >= area.left + area.width - self.image.get_width() - 50 and self.ydirection == 0):
+        if self.x >= area.left + area.width*0.99 - self.image.get_width() and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = 1
-        elif self.y >= 300 and self.xdirection in (0, 1):
+        elif self.y >= area.height*0.39 - self.shipsize and self.xdirection in (0, 1):
             self.xdirection = -1
             self.ydirection = 0
-        elif self.x <= area.left + 50 and self.ydirection == 0:
+        elif self.x <= area.left*1.01 and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = -1
-        elif self.y <= area.top + 30 and self.xdirection == 0:
+        elif self.y <= area.height*0.02 and self.xdirection == 0:
             self.xdirection = 1
             self.ydirection = 0
 

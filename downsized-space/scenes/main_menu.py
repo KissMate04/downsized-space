@@ -31,18 +31,18 @@ class MainScreen:
 
     def handle_events(self, events):
         if not self.is_howto and self.start_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            return "level1"
+            return ["level",1]
 
         if not self.is_howto and self.howto_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             self.is_howto = not self.is_howto
 
         if not self.is_howto and self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
-            return "QUIT"
+            return ["QUIT",0]
 
         if self.is_howto and self.back_to_menu_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             self.is_howto = False
 
-        return "main_menu"
+        return ["main_menu",0]
 
     def update(self, events):
         pass

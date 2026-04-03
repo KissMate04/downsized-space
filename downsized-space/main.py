@@ -27,22 +27,12 @@ def main():
     pygame.font.init()
     pygame.mixer.init()
 
-    LEVEL1 = [
-        (0.1, 0.1),
-        (0.8, 0.25)
-    ]
-    LEVEL2 = [
-        (0.1, 0.1),
-        (0.8, 0.1),
-        (0.1, 0.25),
-        (0.8, 0.25)
-    ]
-    LEVEL3 = [
-        (0.25, 0.1),
-        (0.5, 0.25),
-        (0.75, 0.1),
-        (0.25, 0.25),
-        (0.75, 0.25)
+    LEVEL = [
+        (0, 0), (1, 0),
+        (0, 1),(1, 1),
+        (0.33, 0),(0.66, 0),
+        (0.33, 1),(0.66, 1),
+        (0, 0.5),(1, 0.5)
     ]
 
     clock = pygame.time.Clock()
@@ -52,29 +42,21 @@ def main():
     SIDE_WIDTH = (SCREEN_WIDTH - GAME_WIDTH) // 2  # width of each side area
     GAME_AREA = pygame.Rect(
         SIDE_WIDTH,
-        20,
+        10,
         GAME_WIDTH,
-        SCREEN_HEIGHT - 40
+        SCREEN_HEIGHT - 10
     )
 
-    def make_scene(name):
+    def make_scene(name,num=0):
         if name == "main_menu":
             pygame.time.wait(250)
             pygame.mixer.music.load("downsized-space/audio/music_menu.wav")
             pygame.mixer.music.play(-1)
             return main_menu.MainScreen(GAME_AREA)
-        if name == "level1":
+        if name == "level":
             pygame.mixer.music.load("downsized-space/audio/music_game.wav")
             pygame.mixer.music.play(-1)
-            return level.LevelScene(GAME_AREA, LEVEL1, 1, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
-        if name == "level2":
-            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
-            pygame.mixer.music.play(-1)
-            return level.LevelScene(GAME_AREA, LEVEL2, 2, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
-        if name == "level3":
-            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
-            pygame.mixer.music.play(-1)
-            return level.LevelScene(GAME_AREA, LEVEL3, 3, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
+            return level.LevelScene(GAME_AREA, LEVEL[0:min(len(LEVEL),num*2)], num, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "over":
             pygame.mixer.music.unload()
             return game_over.GameOverScreen(GAME_AREA)
@@ -83,6 +65,7 @@ def main():
     #TODO írd felul a to stringet
     current_scene_name = "main_menu"
     current_scene = make_scene(current_scene_name)
+    level_num = 0
 
     while True:
         events = pygame.event.get()
@@ -92,13 +75,14 @@ def main():
 
         next_scene = current_scene.handle_events(events)
 
-        if next_scene == "QUIT":
+        if next_scene[0] == "QUIT":
             pygame.quit()
             sys.exit()
 
-        if next_scene != current_scene_name:
-            current_scene_name = next_scene
-            current_scene = make_scene(current_scene_name)
+        if next_scene[0] != current_scene_name or next_scene[1] != level_num:
+            current_scene_name = next_scene[0]
+            level_num += 1
+            current_scene = make_scene(current_scene_name, level_num)
 
         current_scene.update(events)
         current_scene.draw(screen)

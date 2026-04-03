@@ -62,10 +62,10 @@ class Ship:
             self.y,
             self.image.get_width(),
             self.image.get_height())
-        self.x = max(self.x, area.left)
+        self.x = max(self.x, area.left*1.01)
         self.y = max(self.y, area.top)
-        self.x = min(self.x, area.left + area.width - self.shipsize)
-        self.y = min(self.y, area.height - self.shipsize)
+        self.x = min(self.x, area.left + area.width*0.99 - self.shipsize)
+        self.y = min(self.y, area.height*0.99 - self.shipsize)
 
     def hit(self, damage_taken):
         """
