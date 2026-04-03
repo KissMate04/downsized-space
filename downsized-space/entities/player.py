@@ -4,8 +4,8 @@ Module for handling the player's ship in the game.
 The player ship is controlled by keyboard input and can shoot projectiles.
 """
 import pygame
-import ship
-import game
+from . import ship
+from .. import settings
 
 
 
@@ -92,7 +92,7 @@ class Player(ship.Ship):
 
         Triggers game over when the player dies.
         """
-        pygame.event.post(pygame.event.Event(game.PLAYER_DEATH))
+        pygame.event.post(pygame.event.Event(settings.PLAYER_DEATH))
 
     def shoot(self):
         """

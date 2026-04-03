@@ -4,20 +4,21 @@ Contains the game loop, levels and the menu.
 import sys
 import os
 import pygame
-import game
+from .scenes import main_menu, level,game_over
+from. import settings
 
 class ShipPanels:
     def __init__(self, gw,sw,sh):
         self.left_panel = pygame.image.load(
-            os.path.join('sprites', "leftpanel.png")).convert_alpha()
+            os.path.join('downsized-space','sprites', "leftpanel.png")).convert_alpha()
         self.left_panel = pygame.transform.scale(
         self.left_panel, (sw, sh))
         self.right_panel = pygame.image.load(
-            os.path.join('sprites', "rightpanel.png")).convert_alpha()
+            os.path.join('downsized-space','sprites', "rightpanel.png")).convert_alpha()
         self.right_panel = pygame.transform.scale(
             self.right_panel, (sw, sh))
         self.area_panel = pygame.image.load(
-            os.path.join('sprites', "areapanel.png")).convert_alpha()
+            os.path.join('downsized-space','sprites', "areapanel.png")).convert_alpha()
         self.area_panel = pygame.transform.scale(
             self.area_panel, (gw, sh))
 
@@ -59,25 +60,25 @@ def main():
     def make_scene(name):
         if name == "main_menu":
             pygame.time.wait(250)
-            pygame.mixer.music.load("audio/music_menu.wav")
+            pygame.mixer.music.load("downsized-space/audio/music_menu.wav")
             pygame.mixer.music.play(-1)
-            return game.MainScreen(GAME_AREA)
+            return main_menu.MainScreen(GAME_AREA)
         if name == "level1":
-            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
             pygame.mixer.music.play(-1)
-            return game.LevelScene(GAME_AREA, LEVEL1, 1, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
+            return level.LevelScene(GAME_AREA, LEVEL1, 1, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "level2":
-            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
             pygame.mixer.music.play(-1)
-            return game.LevelScene(GAME_AREA, LEVEL2, 2, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
+            return level.LevelScene(GAME_AREA, LEVEL2, 2, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "level3":
-            pygame.mixer.music.load("audio/music_game.wav")
+            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
             pygame.mixer.music.play(-1)
-            return game.LevelScene(GAME_AREA, LEVEL3, 3, ShipPanels(GAME_WIDTH,SIDE_WIDTH, SCREEN_HEIGHT))
+            return level.LevelScene(GAME_AREA, LEVEL3, 3, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "over":
             pygame.mixer.music.unload()
-            return game.GameOverScreen(GAME_AREA)
-        return game.MainScreen(GAME_AREA)
+            return game_over.GameOverScreen(GAME_AREA)
+        return main_menu.MainScreen(GAME_AREA)
 
     #TODO írd felul a to stringet
     current_scene_name = "main_menu"
@@ -105,7 +106,7 @@ def main():
 
 
         pygame.display.flip()
-        clock.tick(game.FPS)
+        clock.tick(settings.FPS)
 
 if __name__ == "__main__":
     main()

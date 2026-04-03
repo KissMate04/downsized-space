@@ -3,8 +3,8 @@ Module for handling enemy ships in the game.
 """
 import os
 import pygame
-import ship
-import game
+from . import ship
+from .. import settings
 
 
 class Enemy(ship.Ship):
@@ -72,10 +72,10 @@ class Enemy(ship.Ship):
         """
         if not self.dying:
             self.image = pygame.image.load(
-                os.path.join('sprites', 'explosion.png')).convert_alpha()
+                os.path.join('downsized-space', 'sprites', 'explosion.png')).convert_alpha()
             self.image = pygame.transform.scale(
                 self.image, (self.shipsize, self.shipsize))
-            game.score += 20
+            settings.score += 20
             self.dying = True
             self.time = pygame.time.get_ticks()
 

@@ -4,9 +4,10 @@ Bosses are special enemies with unique movement patterns and behavior.
 """
 import random
 import pygame
-import enemy
-import game
-import ship
+from . import enemy
+from .. import settings
+from ..scenes import level
+from . import ship
 
 
 class Boss(enemy.Enemy):
@@ -44,7 +45,7 @@ class Boss(enemy.Enemy):
         """
         if self.dying:
             if pygame.time.get_ticks() - self.time > 500:
-                game.enemies.remove(self)
+                level.enemies.remove(self)
             return
 
         self.x += self.speed * self.xdirection
@@ -59,7 +60,7 @@ class Boss(enemy.Enemy):
             self.ydirection = 1
 
         # Random chance to direction (1% by default)
-        if (random.random() < game.CHANCE_OF_DIRECTION_CHANGE
+        if (random.random() < settings.CHANCE_OF_DIRECTION_CHANGE
                 and not self.dying):
             self.change_direction()
 

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="downsized-space",
     version="0.1.0",
-    packages=find_packages(include=["downsized_space", "downsized_space.*"]),
+    packages=find_packages(include=["downsized_space", "downsized_space.*", "scenes", "scenes.*"]),
     package_data={
         "downsized_space": ["sprites/*.png"],
     },
