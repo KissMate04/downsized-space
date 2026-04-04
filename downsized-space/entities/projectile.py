@@ -66,7 +66,10 @@ class Projectile:
         Args:
             screen: The pygame surface to draw on
         """
-        if self.shooter == "player":
-            pygame.draw.rect(screen, (255, 100, 0), self.hitbox)
-        else:
+        if self.shooter.__class__.__name__ == "Enemy":
             pygame.draw.rect(screen, (100, 100, 255), self.hitbox)
+        elif self.shooter.__class__.__name__ == "Boss":
+            pygame.draw.rect(screen, (235, 231, 45), self.hitbox)
+        else:
+            pygame.draw.rect(screen, (255, 100, 0), self.hitbox)
+

@@ -54,8 +54,9 @@ def main():
             pygame.mixer.music.play(-1)
             return main_menu.MainScreen(GAME_AREA)
         if name == "level":
-            pygame.mixer.music.load("downsized-space/audio/music_game.wav")
-            pygame.mixer.music.play(-1)
+            if num < 2:
+                pygame.mixer.music.load("downsized-space/audio/music_game.wav")
+                pygame.mixer.music.play(-1)
             return level.LevelScene(GAME_AREA, LEVEL[0:min(len(LEVEL),num*2)], num, ShipPanels(GAME_WIDTH, SIDE_WIDTH, SCREEN_HEIGHT))
         if name == "over":
             pygame.mixer.music.unload()

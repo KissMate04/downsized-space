@@ -140,6 +140,8 @@ class LevelScene:
                             self.p.damage,
                             "player")
                     )
+                    pygame.mixer.Sound("downsized-space/audio/player_shot.wav").play()
+
             # Enemy shooting automatically
             if event.type == settings.ENEMY_SHOOT:
                 for en in self.enemies:
