@@ -47,6 +47,7 @@ def main():
         SCREEN_HEIGHT - 10
     )
 
+
     def make_scene(name,num=0):
         if name == "main_menu":
             pygame.time.wait(250)
@@ -65,8 +66,9 @@ def main():
 
     #TODO írd felul a to stringet
     current_scene_name = "main_menu"
-    current_scene = make_scene(current_scene_name)
     level_num = 0
+    current_scene = make_scene(current_scene_name)
+
 
     while True:
         events = pygame.event.get()
@@ -83,6 +85,8 @@ def main():
         if next_scene[0] != current_scene_name or next_scene[1] != level_num:
             current_scene_name = next_scene[0]
             level_num += 1
+            if current_scene_name == "main_menu":
+                level_num = 0
             current_scene = make_scene(current_scene_name, level_num)
 
         current_scene.update(events)

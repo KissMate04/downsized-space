@@ -43,6 +43,10 @@ class LevelScene:
                 self.area.left + self.area.width // 2 - 100,
                 self.area.height // 3 - 50, 200, 100)
         self.cont_text = settings.menu_font.render("Continue", True, (255, 255, 255))
+        self.menu_btn = pygame.Rect(
+            self.area.left + self.area.width // 2 - 100,
+            self.area.height // 2 - 50, 200, 100)
+        self.menu_text = settings.menu_font.render("Back to Main Menu", True, (255, 255, 255))
         self.quit_btn = pygame.Rect(
             (self.area.left + self.area.width // 2 - 100,
              self.area.height - self.area.height // 3, 200, 100))
@@ -99,6 +103,8 @@ class LevelScene:
             if self.cont_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 pygame.mouse.set_visible(False)
                 self.paused = False
+            if self.menu_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                return ["main_menu",0]
             if self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 return ["QUIT",0]
         if not self.enemies:
@@ -211,6 +217,11 @@ class LevelScene:
                 self.quit_text,
                 (self.quit_btn.centerx - self.quit_text.get_width() // 2,
                  self.quit_btn.centery - self.quit_text.get_height() // 2)
+            )
+            screen.blit(
+                self.menu_text,
+                (self.menu_btn.centerx - self.menu_text.get_width() // 2,
+                 self.menu_btn.centery - self.menu_text.get_height() // 2)
             )
             return
 
