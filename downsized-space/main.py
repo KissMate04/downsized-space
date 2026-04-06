@@ -63,6 +63,7 @@ def main():
             level_num += 1
             if current_scene_name == "main_menu":
                 level_num = 0
+                pass
             current_scene = make_scene(current_scene_name, level_num)
 
         current_scene.update(events)

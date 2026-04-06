@@ -6,29 +6,35 @@ from ..entities.boss import Boss
 from .. import settings
 
 class LevelScene:
+    """
+    Class for the levels of the game. Each level has the same logic, but with different number of enemies.
+    """
     def __init__(self, level, num):
+        """
+        Initializes the level with the given number and enemy positions. Creates player and enemy objets, sets up the game area and pause menu.
+        :param level: list of tuples with enemy positions in the format (nx, ny) where nx and ny are between 0 and 1 and represent the position of the enemy in the enemy area as a percentage.
+        :param num: level number.
+        """
         self.screen = settings.screen
-        self.start_time = pygame.time.get_ticks()
-        self.num = num # level number
-        self.started = False # to show level start text only once
         self.area = settings.GAME_AREA
-        self.enemy_area = pygame.Rect(self.area.left * 1.01, self.area.height*0.02, self.area.width*0.99, self.area.height*0.39)
+        self.enemy_area = pygame.Rect(self.area.left * 1.01, self.area.height * 0.02, self.area.width * 0.99,
+                                      self.area.height * 0.39)
         self.ship_panels = settings.ShipPanels()
-        self.paused = False
+
+        self.num = num
+        # level start text
+        self.level_text = settings.level_font.render(
+            f"LEVEL {self.num}", True, (255, 10, 10))
+        self.start_time = pygame.time.get_ticks()
+        self.started = False  # to show level start text only once
+
         self.enemies = []
         for nx,ny in level:
             self.add_enemy(nx,ny)
         if self.num >= 6:
             for i in range(self.num-5):
-                self.enemies.append(
-                    Boss(
-                        'enemyship2.png',
-                        settings.BOSS_MAX_HEALTH,
-                        settings.BOSS_BASE_DAMAGE,
-                        settings.BOSS_SPEED,
-                        int(self.enemy_area.left* 1.5), int(self.enemy_area.top + self.enemy_area.height * 0.5)
-                    )
-                )
+                self.add_boss()
+
         self.projectiles = []
         self.p = Player(
             'startership.png',
@@ -37,6 +43,7 @@ class LevelScene:
             settings.PLAYER_SPEED,
             self.area.left + self.area.width // 2 - 16,
             self.area.height - self.area.height // 4)
+
         #pause menu buttons
         self.cont_btn = pygame.Rect(
                 self.area.left + self.area.width // 2 - 100,
@@ -50,10 +57,9 @@ class LevelScene:
             (self.area.left + self.area.width // 2 - 100,
              self.area.height - self.area.height // 3, 200, 100))
         self.quit_text = settings.menu_font.render("Quit", True, (255, 255, 255))
-        # level start text
-        self.level_text = settings.level_font.render(
-            f"LEVEL {self.num}", True, (255, 10, 10))
-        pygame.mouse.set_visible(False)
+
+        # health and size bars
+        # Yes these number are horrendous, i know!
         self.health_bar_bg = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
         self.health_bar = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
         self.size_bar_bg = pygame.Rect(
@@ -67,7 +73,10 @@ class LevelScene:
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
             self.area.height * 0.96 - self.area.height * 0.4)
         self.size_bar_resize()
+
+        pygame.mouse.set_visible(False)
         self.first_frame = True
+        self.paused = False
 
     def size_bar_resize(self):
         new_h = int(self.size_bar_bg.height * (self.p.shipsize / self.p.max_size))
@@ -89,6 +98,17 @@ class LevelScene:
                 x,y))
         if y > self.enemy_area.height * 0.75:
             self.enemies[-1].y -= self.enemies[-1].shipsize
+
+    def add_boss(self):
+        self.enemies.append(
+            Boss(
+                'enemyship2.png',
+                settings.BOSS_MAX_HEALTH,
+                settings.BOSS_BASE_DAMAGE,
+                settings.BOSS_SPEED,
+                int(self.enemy_area.left * 1.5), int(self.enemy_area.top + self.enemy_area.height * 0.5)
+            )
+        )
 
     def handle_events(self, events):
         for event in events:
@@ -117,6 +137,7 @@ class LevelScene:
             self.first_frame = False
             return
 
+        # Shows level number for 2 seconds at the start of the level
         if not self.started:
             if pygame.time.get_ticks() - self.start_time > 2000:
                 self.started = True
@@ -124,6 +145,7 @@ class LevelScene:
         #remove dead enemies
         self.enemies = [e for e in self.enemies if e.alive]
 
+        # Move enemies
         for en in self.enemies:
             en.move()
 
@@ -163,7 +185,6 @@ class LevelScene:
         for proj in self.projectiles:
             proj.move()
             # Check projectile for collision with enemies
-            # if hit then add 5 points to score, print message with damage info,
             # remove projectile and damage the enemy
             if proj.shooter == "player":
                 for en in self.enemies:
@@ -176,8 +197,7 @@ class LevelScene:
 
             else:
                 # Check projectile for collision with player
-                # if hit damage the player, remove projectile and print damage
-                # info
+                # if hit damage the player, remove projectile and promote the shooter
                 if proj.hitbox.colliderect(self.p.hitbox):
                     self.p.hit(proj.damage)
                     proj.shooter.promotion()
@@ -242,4 +262,3 @@ class LevelScene:
             self.screen.blit(en.image, (en.x, en.y))
         for proj in self.projectiles:
             proj.draw(self.screen)
-        pygame.draw.rect(self.screen, (0 , 255, 0), self.enemy_area, 2)
