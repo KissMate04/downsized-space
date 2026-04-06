@@ -8,7 +8,6 @@ from . import ship
 from .. import settings
 
 
-
 class Player(ship.Ship):
     """
     Player ship class that inherits from Ship.
@@ -16,12 +15,11 @@ class Player(ship.Ship):
     The player can move in all directions using keyboard controls,
     shoot projectiles, and resize their ship using the mouse wheel.
     """
-    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Player with given parameters.
 
         Args:
-            screen: The pygame surface to draw on
             image: The filename of the player's sprite image
             max_health: Maximum health of the player
             base_damage: Base damage the player deals
@@ -29,9 +27,9 @@ class Player(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(game_width,image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
         self.cooldown = 0
-        self.max_size = self.game_width // 4.5 - ((self.game_width // 4.5) % 16)
+        self.max_size = self.area.width // 4.5 - ((self.area.width // 4.5) % 16)
 
     def resize(self, eventy):
         """
@@ -47,16 +45,10 @@ class Player(ship.Ship):
             self.shipsize += 16
         if eventy == -1 and self.shipsize > max(48, self.max_size - (16*8)):
             self.shipsize -= 16
-        self.damage = self.base_damage * (self.shipsize / 100)
-        self.image = pygame.transform.scale(
-            self.image, (self.shipsize, self.shipsize))
-        self.hitbox = pygame.Rect(
-            self.x,
-            self.y,
-            self.image.get_width(),
-            self.image.get_height())
+        super().resize()
+        super().move() # ensures ship stays in bounds after resizing
 
-    def move(self, area, keys):
+    def move(self, keys):
         """
         Move the player based on keyboard input.
 
@@ -74,8 +66,8 @@ class Player(ship.Ship):
             self.y -= self.speed
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.y += self.speed
-        self.y = max(self.y, area.height*0.4)
-        super().move(area)
+        self.y = max(self.y, self.area.height*0.4)
+        super().move()
 
     def hit(self, damage_taken):
         """

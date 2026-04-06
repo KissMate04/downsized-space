@@ -14,12 +14,11 @@ class Enemy(ship.Ship):
     Enemies follow a rectangular movement pattern, shoot at the player,
     and are upgraded (promoted) when they hit the player.
     """
-    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize an Enemy with given parameters.
 
         Args:
-            screen: The pygame surface to draw on
             image: The filename of the enemy's sprite image
             max_health: Maximum health of the enemy
             base_damage: Base damage the enemy deals
@@ -27,14 +26,14 @@ class Enemy(ship.Ship):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(game_width,image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
         self.alive = True
         self.xdirection = 0
         self.ydirection = 0
         self.dying = False
         self.time = 0
 
-    def move(self, area):
+    def move(self):
         """
         Move the enemy ship according to a rectangular pattern.
 
@@ -46,22 +45,26 @@ class Enemy(ship.Ship):
                 self.alive = False
             return
         #Playable area for enemy is area.left*1.01, area.top*1.01, area.width*0.99, area.height*0.39
+        # Otherwise it stays too close to the walls
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if self.x >= area.left + area.width*0.99 - self.image.get_width() and self.ydirection == 0:
+        if self.x >= self.area.left + self.area.width*0.99 - self.image.get_width() and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = 1
-        elif self.y >= area.height*0.39 - self.shipsize and self.xdirection in (0, 1):
+        elif self.y >= self.area.height*0.39 - self.shipsize and self.xdirection in (0, 1):
             self.xdirection = -1
             self.ydirection = 0
-        elif self.x <= area.left*1.01 and self.ydirection == 0:
+        elif self.x <= self.area.left*1.01 and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = -1
-        elif self.y <= area.height*0.02 and self.xdirection == 0:
+        elif self.y <= self.area.height*0.02 and self.xdirection == 0:
             self.xdirection = 1
             self.ydirection = 0
 
-        super().move( area)
+        super().move()
+
+    def increase_score(self):
+        settings.score += 20
 
     def death(self):
         """
@@ -75,10 +78,10 @@ class Enemy(ship.Ship):
                 os.path.join('downsized-space', 'sprites', 'explosion.png')).convert_alpha()
             self.image = pygame.transform.scale(
                 self.image, (self.shipsize, self.shipsize))
-            settings.score += 20
             pygame.mixer.Sound("downsized-space/audio/enemy_explosion.wav").play()
             self.dying = True
             self.time = pygame.time.get_ticks()
+            self.increase_score()
 
     def promotion(self):
         """
@@ -87,14 +90,7 @@ class Enemy(ship.Ship):
         Increases the enemy's size and damage.
         """
         self.shipsize += 16
-        self.damage = self.base_damage * (self.shipsize / 100)
-        self.image = pygame.transform.scale(
-            self.image, (self.shipsize, self.shipsize))
-        self.hitbox = pygame.Rect(
-            self.x,
-            self.y,
-            self.image.get_width(),
-            self.image.get_height())
+        super().resize()
 
     def shoot(self):
         """

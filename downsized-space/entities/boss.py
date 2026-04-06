@@ -19,12 +19,11 @@ class Boss(enemy.Enemy):
     They can move in any direction and change direction randomly or when hit.
     """
 
-    def __init__(self,game_width, image, max_health, base_damage, speed, x, y):
+    def __init__(self, image, max_health, base_damage, speed, x, y):
         """
         Initialize the Boss with given parameters.
 
         Args:
-            screen: The pygame surface to draw on
             image: The filename of the boss's sprite image
             max_health: Maximum health of the boss
             base_damage: Base damage the boss deals
@@ -32,10 +31,10 @@ class Boss(enemy.Enemy):
             x: spawn coordinate: x
             y: spawn coordinate: y
         """
-        super().__init__(game_width,image, max_health, base_damage, speed, x, y)
+        super().__init__(image, max_health, base_damage, speed, x, y)
 
 
-    def move(self,area):
+    def move(self):
         """
         Move the boss according to its current direction.
 
@@ -51,13 +50,13 @@ class Boss(enemy.Enemy):
 
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if self.x >= area.left + area.width*0.99 - self.image.get_width():
+        if self.x >= self.area.left + self.area.width*0.99 - self.image.get_width():
             self.xdirection = -1
-        elif self.y >= area.height*0.39 - self.shipsize:
+        elif self.y >= self.area.height*0.39 - self.shipsize:
             self.ydirection = -1
-        elif self.x <= area.left*1.01:
+        elif self.x <= self.area.left*1.01:
             self.xdirection = 1
-        elif self.y <= area.height*0.02:
+        elif self.y <= self.area.height*0.02:
             self.ydirection = 1
 
         # Random chance to direction (1% by default)
@@ -65,7 +64,7 @@ class Boss(enemy.Enemy):
                 and not self.dying):
             self.change_direction()
 
-        ship.Ship.move(self,area)
+        ship.Ship.move(self)
 
     def change_direction(self):
         """
@@ -93,3 +92,9 @@ class Boss(enemy.Enemy):
         # Randomly change direction when hit
         if not self.dying:
             self.change_direction()
+
+    def death(self):
+        super().death()
+
+    def increase_score(self):
+        settings.score += 60

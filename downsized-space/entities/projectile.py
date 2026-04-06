@@ -21,7 +21,7 @@ class Projectile:
         Args:
             x: Initial x-coordinate
             y: Initial y-coordinate
-            size: Size of the projectile
+            size: Size of the projectile depends on the side of the ship firing it
             speed: Movement speed of the projectile
             damage: Damage the projectile deals on hit
             shooter: Reference to the entity that fired the projectile ("player" or enemy object)
@@ -61,7 +61,7 @@ class Projectile:
         """
         Draw the projectile on the screen.
 
-        Player projectiles are orange, while enemy projectiles are blue.
+        Player projectiles are orange, enemy projectiles are blue and boss projectiles yellow.
 
         Args:
             screen: The pygame surface to draw on
@@ -71,5 +71,5 @@ class Projectile:
         elif self.shooter.__class__.__name__ == "Boss":
             pygame.draw.rect(screen, (235, 231, 45), self.hitbox)
         else:
-            pygame.draw.rect(screen, (255, 100, 0), self.hitbox)
+            pygame.draw.rect(screen, (255, 100, 0), self.hitbox) # Player
 

@@ -22,7 +22,6 @@ class LevelScene:
             for i in range(self.num-5):
                 self.enemies.append(
                     Boss(
-                        self.area.width,
                         'enemyship2.png',
                         settings.BOSS_MAX_HEALTH,
                         settings.BOSS_BASE_DAMAGE,
@@ -32,7 +31,6 @@ class LevelScene:
                 )
         self.projectiles = []
         self.p = Player(
-            self.area.width,
             'startership.png',
             settings.PLAYER_MAX_HEALTH,
             settings.PLAYER_BASE_DAMAGE,
@@ -84,7 +82,6 @@ class LevelScene:
 
         self.enemies.append(
             Enemy(
-                self.area.width,
                 'enemyship1.png',
                 settings.ENEMY_MAX_HEALTH,
                 settings.ENEMY_BASE_DAMAGE,
@@ -109,6 +106,7 @@ class LevelScene:
             if self.quit_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 return ["QUIT",0]
         if not self.enemies:
+            settings.score += 100
             return ["level", self.num + 1]
         return ["level", self.num]
 
@@ -127,7 +125,7 @@ class LevelScene:
         self.enemies = [e for e in self.enemies if e.alive]
 
         for en in self.enemies:
-            en.move( self.area)
+            en.move()
 
         for event in events:
             # Resizing player with mousewheel
@@ -171,7 +169,6 @@ class LevelScene:
                 for en in self.enemies:
                     if proj.hitbox.colliderect(en.hitbox):
                         if not en.dying:
-                            settings.score += 5
                             en.hit(proj.damage)
                         if proj in self.projectiles:
                             self.projectiles.remove(proj)
@@ -205,7 +202,7 @@ class LevelScene:
                     pygame.K_a,
                     pygame.K_s,
                     pygame.K_d]):
-            self.p.move(self.area, keys)
+            self.p.move(keys)
 
     def draw(self):
         if self.paused:
