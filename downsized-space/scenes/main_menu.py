@@ -2,8 +2,9 @@ import pygame
 from .. import settings
 
 class MainScreen:
-    def __init__(self, area):
-        self.area = area
+    def __init__(self):
+        self.screen = settings.screen
+        self.area = settings.GAME_AREA
         self.start_btn = pygame.Rect(
             self.area.left + self.area.width // 2 - 100,
             self.area.height // 3 - 80, 200, 100)
@@ -47,46 +48,46 @@ class MainScreen:
     def update(self, events):
         pass
 
-    def draw(self, screen):
-        screen.fill((0, 0, 0))
+    def draw(self):
+        self.screen.fill((0, 0, 0))
         if self.is_howto:
-            screen.blit(
+            self.screen.blit(
                 self.howto_text_scroll,
                 (self.area.left + self.area.width // 2 - self.howto_text_scroll.get_width() // 2,
                  self.area.height // 6)
             )
-            screen.blit(
+            self.screen.blit(
                 self.howto_text_enemy,
                 (self.area.left + self.area.width // 2 - self.howto_text_enemy.get_width() // 2,
                  self.area.height // 6 + self.howto_text_scroll.get_height() * 2)
             )
-            screen.blit(
+            self.screen.blit(
                 self.howto_text_move,
                 (self.area.left + self.area.width // 2 - self.howto_text_move.get_width() // 2,
                  self.area.height // 6 + self.howto_text_scroll.get_height() * 6)
             )
-            screen.blit(
+            self.screen.blit(
                 self.howto_text_shoot,
                 (self.area.left + self.area.width // 2 - self.howto_text_shoot.get_width() // 2,
                  self.area.height // 6 + self.howto_text_move.get_height() * 10)
             )
-            screen.blit(
+            self.screen.blit(
                 self.back_to_menu_text,
                 (self.back_to_menu_btn.centerx - self.back_to_menu_text.get_width() // 2,
                  self.back_to_menu_btn.centery - self.back_to_menu_text.get_height() // 2)
             )
         else:
-            screen.blit(
+            self.screen.blit(
                 self.start_text,
                 (self.start_btn.centerx - self.start_text.get_width() // 2,
                 self.start_btn.centery - self.start_text.get_height() // 2)
             )
-            screen.blit(
+            self.screen.blit(
                 self.howto_text,
                 (self.howto_btn.centerx - self.howto_text.get_width() // 2,
                  self.howto_btn.centery - self.howto_text.get_height() // 2)
             )
-            screen.blit(
+            self.screen.blit(
                 self.quit_text,
                 (self.quit_btn.centerx - self.quit_text.get_width() // 2,
                  self.quit_btn.centery - self.quit_text.get_height() // 2)

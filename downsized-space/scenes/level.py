@@ -6,13 +6,14 @@ from ..entities.boss import Boss
 from .. import settings
 
 class LevelScene:
-    def __init__(self, area, level, num, ship_panels):
+    def __init__(self, level, num):
+        self.screen = settings.screen
         self.start_time = pygame.time.get_ticks()
         self.num = num # level number
         self.started = False # to show level start text only once
-        self.area = area
-        self.enemy_area = pygame.Rect(area.left * 1.01, area.height*0.02, area.width*0.99, area.height*0.39)
-        self.ship_panels = ship_panels
+        self.area = settings.GAME_AREA
+        self.enemy_area = pygame.Rect(self.area.left * 1.01, self.area.height*0.02, self.area.width*0.99, self.area.height*0.39)
+        self.ship_panels = settings.ShipPanels()
         self.paused = False
         self.enemies = []
         for nx,ny in level:
@@ -206,42 +207,42 @@ class LevelScene:
                     pygame.K_d]):
             self.p.move(self.area, keys)
 
-    def draw(self, screen):
+    def draw(self):
         if self.paused:
-            screen.blit(
+            self.screen.blit(
                 self.cont_text,
                 (self.cont_btn.centerx - self.cont_text.get_width() // 2,
                  self.cont_btn.centery - self.cont_text.get_height() // 2)
             )
-            screen.blit(
+            self.screen.blit(
                 self.quit_text,
                 (self.quit_btn.centerx - self.quit_text.get_width() // 2,
                  self.quit_btn.centery - self.quit_text.get_height() // 2)
             )
-            screen.blit(
+            self.screen.blit(
                 self.menu_text,
                 (self.menu_btn.centerx - self.menu_text.get_width() // 2,
                  self.menu_btn.centery - self.menu_text.get_height() // 2)
             )
             return
 
-        screen.fill((50, 50, 50))
-        pygame.draw.rect(screen, (255, 0, 0), self.health_bar_bg)
-        pygame.draw.rect(screen, (0, 255, 0), self.health_bar)
-        pygame.draw.rect(screen, (180, 230, 255), self.size_bar_bg)
-        pygame.draw.rect(screen, (235, 180, 52), self.size_bar)
-        screen.blit(self.ship_panels.left_panel, (0, 0))
-        screen.blit(self.ship_panels.area_panel, (self.area.left, 0))
-        screen.blit(self.ship_panels.right_panel, (self.area.left + self.area.width, 0))
+        self.screen.fill((50, 50, 50))
+        pygame.draw.rect(self.screen, (255, 0, 0), self.health_bar_bg)
+        pygame.draw.rect(self.screen, (0, 255, 0), self.health_bar)
+        pygame.draw.rect(self.screen, (180, 230, 255), self.size_bar_bg)
+        pygame.draw.rect(self.screen, (235, 180, 52), self.size_bar)
+        self.screen.blit(self.ship_panels.left_panel, (0, 0))
+        self.screen.blit(self.ship_panels.area_panel, (self.area.left, 0))
+        self.screen.blit(self.ship_panels.right_panel, (self.area.left + self.area.width, 0))
         if not self.started:
-            screen.blit(
+            self.screen.blit(
                 self.level_text,
-                (screen.get_width() / 2 - self.level_text.get_width() / 2,
-                 screen.get_height() / 2 - self.level_text.get_height() / 2))
+                (self.screen.get_width() / 2 - self.level_text.get_width() / 2,
+                 self.screen.get_height() / 2 - self.level_text.get_height() / 2))
 
-        screen.blit(self.p.image, (self.p.x, self.p.y))
+        self.screen.blit(self.p.image, (self.p.x, self.p.y))
         for en in self.enemies:
-            screen.blit(en.image, (en.x, en.y))
+            self.screen.blit(en.image, (en.x, en.y))
         for proj in self.projectiles:
-            proj.draw(screen)
-        pygame.draw.rect(screen, (0 , 255, 0), self.enemy_area, 2)
+            proj.draw(self.screen)
+        pygame.draw.rect(self.screen, (0 , 255, 0), self.enemy_area, 2)

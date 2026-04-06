@@ -6,6 +6,7 @@ and lists of game objects (projectiles, enemies).
 """
 
 import pygame
+import os
 
 pygame.init()
 
@@ -36,18 +37,47 @@ LEVEL1_TARGET_SCORE = 100
 LEVEL2_TARGET_SCORE = 500
 LEVEL3_TARGET_SCORE = 800
 # End of settings
-
+#fonts
 font = pygame.font.SysFont('Futura', 20)
 game_over_font = pygame.font.SysFont('Rocket', 100)
 menu_font = pygame.font.SysFont('Futura', 90)
 level_font = pygame.font.SysFont('Helvetica', 60)
 
-"""
-Initializes the game, creates player and starts the game loop.
-"""
-#fonts
 
 score = 0
 running = True
 in_menu = True
+
+# Screen dimensions
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # the entire scrren
+SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
+GAME_WIDTH = SCREEN_WIDTH // 3  # width of the game area
+SIDE_WIDTH = (SCREEN_WIDTH - GAME_WIDTH) // 2  # width of each side area
+GAME_AREA = pygame.Rect(
+    SIDE_WIDTH,
+    10,
+    GAME_WIDTH,
+    SCREEN_HEIGHT - 10
+)
+
+
+# Image paths.
+LEFT_PANEL_PATH = os.path.join('downsized-space','sprites', "leftpanel.png")
+RIGHT_PANEL_PATH = os.path.join('downsized-space','sprites', "rightpanel.png")
+AREA_PANEL_PATH = os.path.join('downsized-space','sprites', "areapanel.png")
+
+class ShipPanels:
+    """
+    Class that loads the backgournd images
+    """
+    def __init__(self):
+        self.left_panel = pygame.image.load(LEFT_PANEL_PATH).convert_alpha()
+        self.left_panel = pygame.transform.scale(
+        self.left_panel, (SIDE_WIDTH, SCREEN_HEIGHT))
+        self.right_panel = pygame.image.load(RIGHT_PANEL_PATH).convert_alpha()
+        self.right_panel = pygame.transform.scale(
+            self.right_panel, (SIDE_WIDTH, SCREEN_HEIGHT))
+        self.area_panel = pygame.image.load(AREA_PANEL_PATH).convert_alpha()
+        self.area_panel = pygame.transform.scale(
+            self.area_panel, (GAME_WIDTH, SCREEN_HEIGHT))
 
