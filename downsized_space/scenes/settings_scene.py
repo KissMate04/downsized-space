@@ -31,10 +31,10 @@ class SettingsScreen:
             self.area.left + self.area.width+ self.music_settings_btn_left.width*4,
             self.area.height // 2 - self.music_settings_value.get_height() // 2, self.music_settings_value.get_height(), self.music_settings_value.get_height()))
 
-        self.settings_btn_left_image = pygame.image.load(os.path.join('downsized-space',"sprites", "settings_btn_left.png")).convert_alpha()
+        self.settings_btn_left_image = pygame.image.load(settings.get_resource_path(os.path.join('downsized_space',"sprites", "settings_btn_left.png"))).convert_alpha()
         self.settings_btn_left_image = pygame.transform.scale(
             self.settings_btn_left_image, (self.music_settings_value.get_height(), self.music_settings_value.get_height()))
-        self.settings_btn_right_image = pygame.image.load(os.path.join('downsized-space',"sprites", "settings_btn_right.png")).convert_alpha()
+        self.settings_btn_right_image = pygame.image.load(settings.get_resource_path(os.path.join('downsized_space',"sprites", "settings_btn_right.png"))).convert_alpha()
         self.settings_btn_right_image = pygame.transform.scale(
             self.settings_btn_right_image, (self.music_settings_value.get_height(), self.music_settings_value.get_height()))
 

@@ -3,7 +3,10 @@ Contains the game loop.
 """
 import sys
 import pygame
-from .scenes import main_menu, level,game_over, settings_scene
+from .scenes.main_menu import MainScreen
+from .scenes.level import LevelScene
+from .scenes.settings_scene import SettingsScreen
+from .scenes.game_over import GameOverScreen
 from. import settings
 
 def main():
@@ -27,21 +30,21 @@ def main():
     def make_scene(name,num=0):
         if name == "main_menu":
             pygame.time.wait(250) # to avoid clicking from the previous scene effecting the menu
-            pygame.mixer.music.load("downsized-space/audio/music_menu.wav")
+            pygame.mixer.music.load(settings.get_resource_path("downsized_space/audio/music_menu.wav"))
             pygame.mixer.music.play(-1)
-            return main_menu.MainScreen()
+            return MainScreen()
         if name == "settings":
             pygame.time.wait(250)  # to avoid clicking from the previous scene effecting the menu
-            return settings_scene.SettingsScreen()
+            return SettingsScreen()
         if name == "level":
             if num < 2: # This allows continuous music playing between levels
-                pygame.mixer.music.load("downsized-space/audio/music_game.wav")
+                pygame.mixer.music.load(settings.get_resource_path("downsized_space/audio/music_game.wav"))
                 pygame.mixer.music.play(-1)
-            return level.LevelScene(LEVEL[0:min(len(LEVEL),num*2)], num)
+            return LevelScene(LEVEL[0:min(len(LEVEL),num*2)], num)
         if name == "over":
             pygame.mixer.music.unload()
-            return game_over.GameOverScreen()
-        return main_menu.MainScreen()
+            return GameOverScreen()
+        return MainScreen()
 
     current_scene_name = "main_menu"
     level_num = 0

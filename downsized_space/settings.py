@@ -7,6 +7,20 @@ and lists of game objects (projectiles, enemies).
 
 import pygame
 import os
+import sys
+
+from PyInstaller.utils.win32.winresource import get_resources
+
+
+def get_resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 
 pygame.init()
 
@@ -60,17 +74,17 @@ GAME_AREA = pygame.Rect(
 )
 
 sounds = {
-    "player_shot": pygame.mixer.Sound("downsized-space/audio/player_shot.wav"),
-    "enemy_explosion": pygame.mixer.Sound("downsized-space/audio/enemy_explosion.wav")
+    "player_shot": pygame.mixer.Sound(get_resource_path("downsized_space/audio/player_shot.wav")),
+    "enemy_explosion": pygame.mixer.Sound(get_resource_path("downsized_space/audio/enemy_explosion.wav"))
 }
 
 #Player
 current_health = PLAYER_MAX_HEALTH
 
 # Image paths.
-LEFT_PANEL_PATH = os.path.join('downsized-space','sprites', "leftpanel.png")
-RIGHT_PANEL_PATH = os.path.join('downsized-space','sprites', "rightpanel.png")
-AREA_PANEL_PATH = os.path.join('downsized-space','sprites', "areapanel.png")
+LEFT_PANEL_PATH = get_resource_path(os.path.join('downsized_space','sprites', "leftpanel.png"))
+RIGHT_PANEL_PATH = get_resource_path(os.path.join('downsized_space','sprites', "rightpanel.png"))
+AREA_PANEL_PATH = get_resource_path(os.path.join('downsized_space','sprites', "areapanel.png"))
 
 class ShipPanels:
     """

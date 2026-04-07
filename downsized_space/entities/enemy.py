@@ -75,7 +75,7 @@ class Enemy(ship.Ship):
         """
         if not self.dying:
             self.image = pygame.image.load(
-                os.path.join('downsized-space', 'sprites', 'explosion.png')).convert_alpha()
+                settings.get_resource_path(os.path.join('downsized_space', 'sprites', 'explosion.png'))).convert_alpha()
             self.image = pygame.transform.scale(
                 self.image, (self.shipsize, self.shipsize))
             settings.sounds["enemy_explosion"].play()

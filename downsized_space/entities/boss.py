@@ -6,7 +6,6 @@ import random
 import pygame
 from . import enemy
 from .. import settings
-from ..scenes import level
 from . import ship
 
 

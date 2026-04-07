@@ -32,7 +32,7 @@ class Ship:
         self.shipsize = max(48, self.max_size - (16*10))
 
         self.image = pygame.image.load(
-            os.path.join('downsized-space', 'sprites', image)).convert_alpha()
+            settings.get_resource_path(os.path.join('downsized_space', 'sprites', image))).convert_alpha()
         self.image = pygame.transform.scale(
             self.image, (self.shipsize, self.shipsize))
 
