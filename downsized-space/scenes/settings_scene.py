@@ -62,12 +62,14 @@ class SettingsScreen:
                     for each in settings.sounds:
                         settings.sounds[each].set_volume(settings.SOUNDS_VOLUME)
                     self.sounds_settings_value = settings.menu_font.render(str(int(settings.SOUNDS_VOLUME*10)), True, (255, 255, 255))
+                    settings.sounds["player_shot"].play()
 
                 if self.sounds_settings_btn_right.collidepoint(pygame.mouse.get_pos()):
                     settings.SOUNDS_VOLUME = min(1.0, round(settings.SOUNDS_VOLUME + 0.1,1))
                     for each in settings.sounds:
                         settings.sounds[each].set_volume(settings.SOUNDS_VOLUME)
                     self.sounds_settings_value = settings.menu_font.render(str(int(settings.SOUNDS_VOLUME*10)), True, (255, 255, 255))
+                    settings.sounds["player_shot"].play()
 
                 if self.menu_btn.collidepoint(pygame.mouse.get_pos()):
                         return ["main_menu", 0]

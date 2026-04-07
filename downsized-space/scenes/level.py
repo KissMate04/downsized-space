@@ -77,6 +77,7 @@ class LevelScene:
         pygame.mouse.set_visible(False)
         self.first_frame = True
         self.paused = False
+        self.shooting = False
 
     def size_bar_resize(self):
         new_h = int(self.size_bar_bg.height * (self.p.shipsize / self.p.max_size))
@@ -117,6 +118,14 @@ class LevelScene:
                 pygame.mouse.set_visible(self.paused)
             if event.type == settings.PLAYER_DEATH:
                 return ["over",0]
+            # track mouse hold state for continuous shooting
+            if ((event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or
+                    (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
+                self.shooting = True
+            if ((event.type == pygame.MOUSEBUTTONUP and event.button == 1) or
+                    (event.type == pygame.KEYUP and event.key == pygame.K_SPACE)):
+                self.shooting = False
+
         if self.paused:
             if self.cont_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 pygame.mouse.set_visible(False)
@@ -156,8 +165,7 @@ class LevelScene:
                 self.size_bar_resize()
 
             # Player shooting with left mouse click or space
-            if ((event.type == pygame.MOUSEBUTTONDOWN and event.button == 1) or (
-                    event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE)):
+            if self.shooting:
                 if self.p.shoot():
                     self.projectiles.append(
                         Projectile(
