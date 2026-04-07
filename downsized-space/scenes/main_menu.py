@@ -52,6 +52,7 @@ class MainScreen:
         else:
             if self.start_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 settings.score = 0
+                settings.current_health = settings.PLAYER_MAX_HEALTH
                 return ["level",1]
 
             if self.settings_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:

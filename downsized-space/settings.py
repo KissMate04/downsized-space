@@ -64,6 +64,9 @@ sounds = {
     "enemy_explosion": pygame.mixer.Sound("downsized-space/audio/enemy_explosion.wav")
 }
 
+#Player
+current_health = PLAYER_MAX_HEALTH
+
 # Image paths.
 LEFT_PANEL_PATH = os.path.join('downsized-space','sprites', "leftpanel.png")
 RIGHT_PANEL_PATH = os.path.join('downsized-space','sprites', "rightpanel.png")

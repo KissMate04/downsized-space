@@ -38,12 +38,13 @@ class LevelScene:
         self.projectiles = []
         self.p = Player(
             'startership.png',
-            settings.PLAYER_MAX_HEALTH,
+            settings.current_health,
             settings.PLAYER_BASE_DAMAGE,
             settings.PLAYER_SPEED,
             self.area.left + self.area.width // 2 - 16,
             self.area.height - self.area.height // 4)
 
+        print(f"new level player: max: {self.p.max_health} current: {self.p.health}")
         #pause menu buttons
         self.cont_btn = pygame.Rect(
                 self.area.left + self.area.width // 2 - 100,
@@ -59,7 +60,7 @@ class LevelScene:
         self.quit_text = settings.menu_font.render("Quit", True, (255, 255, 255))
 
         # health and size bars
-        # Yes these number are horrendous, i know!
+        # Yes these number are horrendous, i know
         self.health_bar_bg = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
         self.health_bar = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
         self.size_bar_bg = pygame.Rect(
@@ -73,6 +74,7 @@ class LevelScene:
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
             self.area.height - self.area.height * 0.4)
         self.size_bar_resize()
+        self.health_bar_resize()
 
         pygame.mouse.set_visible(False)
         self.first_frame = True
@@ -85,6 +87,9 @@ class LevelScene:
 
         self.size_bar.height = new_h
         self.size_bar.top = self.size_bar_bg.bottom - new_h
+
+    def health_bar_resize(self):
+        self.health_bar.width = self.health_bar_bg.width * (self.p.health / settings.PLAYER_MAX_HEALTH)
 
     def add_enemy(self, nx,ny):
         x = int(self.enemy_area.left + nx * self.enemy_area.width)
@@ -136,6 +141,8 @@ class LevelScene:
                 return ["QUIT",0]
         if not self.enemies:
             settings.score += 100
+            settings.current_health = self.p.health
+            print("going to new level")
             return ["level", self.num + 1]
         return ["level", self.num]
 
@@ -211,7 +218,7 @@ class LevelScene:
                     proj.shooter.promotion()
                     if proj in self.projectiles:
                         self.projectiles.remove(proj)
-                    self.health_bar.width = self.health_bar_bg.width * (self.p.health / self.p.max_health)
+                    self.health_bar_resize()
 
                 # Remove projectile if it goes off-screen
                 if proj in self.projectiles and (
