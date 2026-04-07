@@ -44,7 +44,6 @@ class LevelScene:
             self.area.left + self.area.width // 2 - 16,
             self.area.height - self.area.height // 4)
 
-        print(f"new level player: max: {self.p.max_health} current: {self.p.health}")
         #pause menu buttons
         self.cont_btn = pygame.Rect(
                 self.area.left + self.area.width // 2 - 100,
@@ -142,7 +141,6 @@ class LevelScene:
         if not self.enemies:
             settings.score += 100
             settings.current_health = self.p.health
-            print("going to new level")
             return ["level", self.num + 1]
         return ["level", self.num]
 

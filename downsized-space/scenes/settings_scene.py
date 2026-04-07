@@ -81,10 +81,6 @@ class SettingsScreen:
 
     def draw(self):
         self.screen.fill((0, 0, 0))
-        pygame.draw.rect(self.screen, (0, 255, 255), self.music_settings_btn_left)
-        pygame.draw.rect(self.screen, (5, 255, 255), self.music_settings_btn_right)
-        pygame.draw.rect(self.screen, (5, 255, 255), self.sounds_settings_btn_left)
-        pygame.draw.rect(self.screen, (5, 255, 255), self.sounds_settings_btn_right)
         self.screen.blit(
             self.music_settings_text,
             (self.area.left,

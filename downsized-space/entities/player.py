@@ -43,7 +43,7 @@ class Player(ship.Ship):
         """
         if eventy == 1 and self.shipsize < self.max_size:
             self.shipsize += 16
-        if eventy == -1 and self.shipsize > max(48, self.max_size - (16*8)):
+        if eventy == -1 and self.shipsize > max(48, self.max_size - (16*10)):
             self.shipsize -= 16
         super().resize()
         super().move() # ensures ship stays in bounds after resizing

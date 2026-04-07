@@ -89,7 +89,7 @@ class Enemy(ship.Ship):
 
         Increases the enemy's size and damage.
         """
-        self.shipsize += 16
+        self.shipsize = min(self.shipsize+16, self.max_size)
         super().resize()
 
     def shoot(self):

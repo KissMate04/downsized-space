@@ -28,8 +28,8 @@ class Ship:
             y: spawn coordinate: y
         """
         self.area = settings.GAME_AREA
-        max_size = self.area.width // 4.5 - ((self.area.width // 4.5) % 16) # size depends on the screen size
-        self.shipsize = max(48, max_size - (16*8))
+        self.max_size = self.area.width // 5 - ((self.area.width // 5) % 16) # size depends on the screen size
+        self.shipsize = max(48, self.max_size - (16*10))
 
         self.image = pygame.image.load(
             os.path.join('downsized-space', 'sprites', image)).convert_alpha()
