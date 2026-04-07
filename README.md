@@ -1,5 +1,6 @@
-pip install git+https://github.com/KissMate04/PythonProject.git paranccsal le lehet tölteni, utána a pythonproject paranccsal futtatható. Ha a ez valamiért nem működik akkor pedig a main.py futtatásával.
+# Downsized Space
+Arcade style space game made with pygame
 
-A kódelemzők eredményei a pylint.txt és pycodestyle.txt-ben vannak.
+Find the latest release here: <a href="https://github.com/KissMate04/downsized-space/releases">release</a>
 
-A videó a cooscapen lett beadva a link mellett
+<img width="480" height="270" alt="showcase" src="https://github.com/user-attachments/assets/a1553692-a6d4-44a5-8f46-6fa29962d330" />
