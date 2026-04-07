@@ -3,10 +3,8 @@ Contains the game loop.
 """
 import sys
 import pygame
-from .scenes import main_menu, level,game_over
+from .scenes import main_menu, level,game_over, settings_scene
 from. import settings
-
-
 
 def main():
     current_scene = "main_menu"
@@ -32,6 +30,9 @@ def main():
             pygame.mixer.music.load("downsized-space/audio/music_menu.wav")
             pygame.mixer.music.play(-1)
             return main_menu.MainScreen()
+        if name == "settings":
+            pygame.time.wait(250)  # to avoid clicking from the previous scene effecting the menu
+            return settings_scene.SettingsScreen()
         if name == "level":
             if num < 2: # This allows continuous music playing between levels
                 pygame.mixer.music.load("downsized-space/audio/music_game.wav")

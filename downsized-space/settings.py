@@ -30,12 +30,11 @@ BOSS_MAX_HEALTH = 200
 BOSS_SPEED = 5
 BOSS_BASE_DAMAGE = 50
 CHANCE_OF_DIRECTION_CHANGE = 0.01   # 0.01 = 1% chance
+# volume
+MUSIC_VOLUME = 0.5
+SOUNDS_VOLUME = 0.5
 # projectile
 PROJECTILE_SPEED = 6
-# score to progress
-LEVEL1_TARGET_SCORE = 100
-LEVEL2_TARGET_SCORE = 500
-LEVEL3_TARGET_SCORE = 800
 # End of settings
 #fonts
 font = pygame.font.SysFont('Futura', 20)
@@ -51,7 +50,7 @@ in_menu = True
 # Screen dimensions
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # the entire scrren
 SCREEN_WIDTH, SCREEN_HEIGHT = screen.get_size()
-GAME_WIDTH = SCREEN_WIDTH // 3  # width of the game area
+GAME_WIDTH = int(SCREEN_WIDTH * 0.4)  # width of the game area
 SIDE_WIDTH = (SCREEN_WIDTH - GAME_WIDTH) // 2  # width of each side area
 GAME_AREA = pygame.Rect(
     SIDE_WIDTH,
@@ -60,6 +59,10 @@ GAME_AREA = pygame.Rect(
     SCREEN_HEIGHT - 10
 )
 
+sounds = {
+    "player_shot": pygame.mixer.Sound("downsized-space/audio/player_shot.wav"),
+    "enemy_explosion": pygame.mixer.Sound("downsized-space/audio/enemy_explosion.wav")
+}
 
 # Image paths.
 LEFT_PANEL_PATH = os.path.join('downsized-space','sprites', "leftpanel.png")

@@ -64,14 +64,14 @@ class LevelScene:
         self.health_bar = pygame.Rect(self.ship_panels.left_panel.get_width() * 0.09, 20, self.ship_panels.left_panel.get_width() // 1.35, self.area.height-20)
         self.size_bar_bg = pygame.Rect(
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.7,
-            self.area.height * 0.44,
+            self.area.height * 0.4,
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
-            self.area.height * 0.96 - self.area.height * 0.4)
+            self.area.height - self.area.height * 0.4)
         self.size_bar = pygame.Rect(
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.7,
-            self.area.height * 0.44,
+            self.area.height * 0.4,
             self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.87 - self.ship_panels.left_panel.get_width() + self.area.width + self.ship_panels.right_panel.get_width() * 0.75,
-            self.area.height * 0.96 - self.area.height * 0.4)
+            self.area.height - self.area.height * 0.4)
         self.size_bar_resize()
 
         pygame.mouse.set_visible(False)
@@ -106,7 +106,7 @@ class LevelScene:
                 settings.BOSS_MAX_HEALTH,
                 settings.BOSS_BASE_DAMAGE,
                 settings.BOSS_SPEED,
-                int(self.enemy_area.left * 1.5), int(self.enemy_area.top + self.enemy_area.height * 0.5)
+                int(self.enemy_area.left + self.enemy_area.width // 2), int(self.enemy_area.top + self.enemy_area.height // 2)
             )
         )
 
@@ -167,7 +167,7 @@ class LevelScene:
                             self.p.damage,
                             "player")
                     )
-                    pygame.mixer.Sound("downsized-space/audio/player_shot.wav").play()
+                    settings.sounds["player_shot"].play()
 
             # Enemy shooting automatically
             if event.type == settings.ENEMY_SHOOT:

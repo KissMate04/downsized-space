@@ -54,6 +54,9 @@ class MainScreen:
                 settings.score = 0
                 return ["level",1]
 
+            if self.settings_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+                return ["settings",0]
+
             if self.howto_btn.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
                 self.is_howto = True
 

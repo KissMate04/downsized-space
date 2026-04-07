@@ -78,7 +78,7 @@ class Enemy(ship.Ship):
                 os.path.join('downsized-space', 'sprites', 'explosion.png')).convert_alpha()
             self.image = pygame.transform.scale(
                 self.image, (self.shipsize, self.shipsize))
-            pygame.mixer.Sound("downsized-space/audio/enemy_explosion.wav").play()
+            settings.sounds["enemy_explosion"].play()
             self.dying = True
             self.time = pygame.time.get_ticks()
             self.increase_score()
