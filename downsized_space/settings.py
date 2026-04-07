@@ -5,20 +5,15 @@ Contains global variables for game settings, state tracking,
 and lists of game objects (projectiles, enemies).
 """
 
-import pygame
 import os
 import sys
 
-from PyInstaller.utils.win32.winresource import get_resources
+import pygame
 
 
 def get_resource_path(relative_path):
-    try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
+    """Return an absolute path that works for source runs and PyInstaller builds."""
+    base_path = getattr(sys, "_MEIPASS", os.path.abspath("."))
     return os.path.join(base_path, relative_path)
 
 
@@ -100,4 +95,3 @@ class ShipPanels:
         self.area_panel = pygame.image.load(AREA_PANEL_PATH).convert_alpha()
         self.area_panel = pygame.transform.scale(
             self.area_panel, (GAME_WIDTH, SCREEN_HEIGHT))
-
