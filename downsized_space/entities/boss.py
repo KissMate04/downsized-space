@@ -5,8 +5,6 @@ Bosses are special enemies with unique movement patterns and behavior.
 import random
 import pygame
 from . import enemy
-from .. import settings
-from . import ship
 
 
 class Boss(enemy.Enemy):
@@ -18,19 +16,22 @@ class Boss(enemy.Enemy):
     They can move in any direction and change direction randomly or when hit.
     """
 
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self, max_health, base_damage, speed, x, y, game_parameters, assets):
         """
         Initialize the Boss with given parameters.
 
         Args:
-            image: The filename of the boss's sprite image
             max_health: Maximum health of the boss
             base_damage: Base damage the boss deals
             speed: Movement speed of the boss
             x: spawn coordinate: x
             y: spawn coordinate: y
+            game_parameters: Game parameters
+            assets: Game assets
         """
-        super().__init__(image, max_health, base_damage, speed, x, y)
+        super().__init__(max_health, base_damage, speed, x, y, game_parameters, assets)
+        # Added to score when killed.
+        self.value = 60
 
 
     def move(self):
@@ -49,21 +50,24 @@ class Boss(enemy.Enemy):
 
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if self.x >= self.area.left + self.area.width*0.99 - self.image.get_width():
+        # hit right wall, bounce left
+        if self.x >= self.game_parameters.enemy_area.left + self.game_parameters.enemy_area.width - self.image.get_width():
             self.xdirection = -1
-        elif self.y >= self.area.height*0.39 - self.shipsize:
+        # hit bottom wall, bounce up
+        elif self.y >= self.game_parameters.enemy_area.bottom - self.shipsize:
             self.ydirection = -1
-        elif self.x <= self.area.left*1.01:
+        # hit left wall, bounce right
+        elif self.x <= self.game_parameters.enemy_area.left:
             self.xdirection = 1
-        elif self.y <= self.area.height*0.02:
+        # hit top wall, bounce down
+        elif self.y <= self.game_parameters.enemy_area.top:
             self.ydirection = 1
 
         # Random chance to direction (1% by default)
-        if (random.random() < settings.CHANCE_OF_DIRECTION_CHANGE
-                and not self.dying):
+        if (random.random() < self.game_parameters.chance_of_direction_change) and not self.dying:
             self.change_direction()
 
-        ship.Ship.move(self)
+        super().move()
 
     def change_direction(self):
         """
@@ -95,5 +99,5 @@ class Boss(enemy.Enemy):
     def death(self):
         super().death()
 
-    def increase_score(self):
-        settings.score += 60
+    def __str__(self):
+        return "Boss"

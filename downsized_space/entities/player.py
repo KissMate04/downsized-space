@@ -5,8 +5,6 @@ The player ship is controlled by keyboard input and can shoot projectiles.
 """
 import pygame
 from . import ship
-from .. import settings
-
 
 class Player(ship.Ship):
     """
@@ -15,21 +13,22 @@ class Player(ship.Ship):
     The player can move in all directions using keyboard controls,
     shoot projectiles, and resize their ship using the mouse wheel.
     """
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self, max_health, base_damage, speed, x, y, game_parameters, assets):
         """
         Initialize the Player with given parameters.
 
         Args:
-            image: The filename of the player's sprite image
-            max_health: Maximum health of the player
+            max_health: Maximum health of the player. On a new level this is the remaining health from the previous level
             base_damage: Base damage the player deals
             speed: Movement speed of the player
             x: spawn coordinate: x
             y: spawn coordinate: y
+            game_parameters: Game parameters
+            assets: Game assets
         """
-        super().__init__(image, max_health, base_damage, speed, x, y)
+        super().__init__(max_health, base_damage, speed, x, y, game_parameters, assets)
         self.cooldown = 0
-        self.max_size = self.area.width // 4.5 - ((self.area.width // 4.5) % 16)
+        self.max_size = self.game_parameters.game_area.width // 4.5 - ((self.game_parameters.game_area.width // 4.5) % 16)
 
     def resize(self, eventy):
         """
@@ -66,7 +65,7 @@ class Player(ship.Ship):
             self.y -= self.speed
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.y += self.speed
-        self.y = max(self.y, self.area.height*0.4)
+        self.y = max(self.y, self.game_parameters.player_area.top)
         super().move()
 
     def hit(self, damage_taken):
@@ -84,7 +83,7 @@ class Player(ship.Ship):
 
         Triggers game over when the player dies.
         """
-        pygame.event.post(pygame.event.Event(settings.PLAYER_DEATH))
+        pygame.event.post(pygame.event.Event(self.game_parameters.player_death))
 
     def shoot(self):
         """
@@ -97,3 +96,6 @@ class Player(ship.Ship):
             self.cooldown = pygame.time.get_ticks()
             return True
         return False
+
+    def __str__(self):
+        return "Player"

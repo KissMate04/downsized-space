@@ -14,24 +14,27 @@ class Enemy(ship.Ship):
     Enemies follow a rectangular movement pattern, shoot at the player,
     and are upgraded (promoted) when they hit the player.
     """
-    def __init__(self, image, max_health, base_damage, speed, x, y):
+    def __init__(self, max_health, base_damage, speed, x, y, game_parameters, assets):
         """
         Initialize an Enemy with given parameters.
 
         Args:
-            image: The filename of the enemy's sprite image
             max_health: Maximum health of the enemy
             base_damage: Base damage the enemy deals
             speed: Movement speed of the enemy
             x: spawn coordinate: x
             y: spawn coordinate: y
+            game_parameters: Game parameters
+            assets: Game assets
         """
-        super().__init__(image, max_health, base_damage, speed, x, y)
+        super().__init__(max_health, base_damage, speed, x, y, game_parameters, assets)
         self.alive = True
         self.xdirection = 0
         self.ydirection = 0
         self.dying = False
         self.time = 0
+        # Added to score when killed.
+        self.value = 20
 
     def move(self):
         """
@@ -48,23 +51,24 @@ class Enemy(ship.Ship):
         # Otherwise it stays too close to the walls
         self.x += self.speed * self.xdirection
         self.y += self.speed * self.ydirection
-        if self.x >= self.area.left + self.area.width*0.99 - self.image.get_width() and self.ydirection == 0:
+        # hit right wall, going down now
+        if self.x >= self.game_parameters.enemy_area.left + self.game_parameters.enemy_area.width - self.image.get_width() and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = 1
-        elif self.y >= self.area.height*0.39 - self.shipsize and self.xdirection in (0, 1):
+        # hit bottom wall, going left now
+        elif self.y >= self.game_parameters.enemy_area.bottom - self.shipsize and self.xdirection in (0, 1):
             self.xdirection = -1
             self.ydirection = 0
-        elif self.x <= self.area.left*1.01 and self.ydirection == 0:
+        # hit left wall, going up now
+        elif self.x <= self.game_parameters.enemy_area.left and self.ydirection == 0:
             self.xdirection = 0
             self.ydirection = -1
-        elif self.y <= self.area.height*0.02 and self.xdirection == 0:
+        # hit top wall, going right now
+        elif self.y <= self.game_parameters.enemy_area.top and self.xdirection == 0:
             self.xdirection = 1
             self.ydirection = 0
 
         super().move()
-
-    def increase_score(self):
-        settings.score += 20
 
     def death(self):
         """
@@ -74,14 +78,12 @@ class Enemy(ship.Ship):
         and marks the enemy for removal after a delay.
         """
         if not self.dying:
-            self.image = pygame.image.load(
-                settings.get_resource_path(os.path.join('downsized_space', 'sprites', 'explosion.png'))).convert_alpha()
-            self.image = pygame.transform.scale(
-                self.image, (self.shipsize, self.shipsize))
-            settings.sounds["enemy_explosion"].play()
+            self.image = self.assets.sprites["explosion"]
+            self.assets.sounds["enemy_explosion"].play()
             self.dying = True
             self.time = pygame.time.get_ticks()
-            self.increase_score()
+            return 1
+        return None
 
     def promotion(self):
         """
@@ -103,3 +105,5 @@ class Enemy(ship.Ship):
             return False
         return True
 
+    def __str__(self):
+        return "Enemy"

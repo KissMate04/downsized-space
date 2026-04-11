@@ -46,16 +46,11 @@ class Projectile:
         Player projectiles move upward, while enemy projectiles move downward.
         Updates the hitbox position accordingly.
         """
-        if self.shooter == "player":
+        if str(self.shooter) == "Player":
             self.y -= self.speed
         else:
             self.y += self.speed
-        self.hitbox = pygame.Rect(
-            self.x,
-            self.y - self.size * 1.5,
-            min(self.size / 4, 15),
-            min(self.size, 40)
-        )
+        self.hitbox.topleft = (self.x,self.y - self.size * 1.5)
 
     def draw(self, screen):
         """
@@ -66,9 +61,9 @@ class Projectile:
         Args:
             screen: The pygame surface to draw on
         """
-        if self.shooter.__class__.__name__ == "Enemy":
+        if str(self.shooter) == "Enemy":
             pygame.draw.rect(screen, (100, 100, 255), self.hitbox)
-        elif self.shooter.__class__.__name__ == "Boss":
+        elif str(self.shooter) == "Boss":
             pygame.draw.rect(screen, (235, 231, 45), self.hitbox)
         else:
             pygame.draw.rect(screen, (255, 100, 0), self.hitbox) # Player
