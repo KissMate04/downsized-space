@@ -1,6 +1,3 @@
-# Current problems:
-# random lag spikes?
-# movement sometimes faster
 """
 Contains the game loop.
 """

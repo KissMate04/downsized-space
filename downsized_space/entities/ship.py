@@ -3,7 +3,6 @@ Module containing the base Ship class for the game.
 
 All player and enemy ships inherit from this base class.
 """
-import os
 import pygame
 from abc import ABC, abstractmethod
 
@@ -30,7 +29,6 @@ class Ship(ABC):
         self.game_parameters = game_parameters
         self.assets = assets
 
-        #self.area = settings.GAME_AREA
         self.max_size = self.assets.max_size
         self.shipsize = self.assets.shipsize
 

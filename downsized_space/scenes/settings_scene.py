@@ -1,6 +1,4 @@
-from .. import settings
 import pygame
-import os
 
 class SettingsScreen:
     """

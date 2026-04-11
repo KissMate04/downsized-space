@@ -4,7 +4,6 @@ Module for handling enemy ships in the game.
 import os
 import pygame
 from . import ship
-from .. import settings
 
 
 class Enemy(ship.Ship):
