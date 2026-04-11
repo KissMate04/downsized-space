@@ -3,8 +3,8 @@ Arcade style space game made with pygame
 
 ## Installation
 - Find the latest release here: <a href="https://github.com/KissMate04/downsized-space/releases">release</a>
-- Windows: download downsized_space_windows.exe and run it
-- Linux: download downsized_space_linux and run it
+- Windows: download downsized_space.exe and run it
+- Linux: download downsized_space and run it
 
 ## Running from source
 - Download the source code and extract it.
